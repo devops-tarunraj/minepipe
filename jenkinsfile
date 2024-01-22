@@ -7,30 +7,15 @@ pipeline {
     }
 
     stages {
-        stage('Checkout') {
+        stage('checkout') {
             steps {
-                // Checkout the source code from your GitHub repository
-                checkout scm
+            // checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/devops-tarunraj/minepipe.git']])
             }
         }
-
-        stage('Build') {
+    stage('Build') {
             steps {
                 // Set up the Maven environment
-                withMaven(maven: MAVEN_HOME, jdk: JAVA_HOME) {
+                withMaven(maven: usr/share/maven) {
                     // Run Maven build
                     sh 'mvn clean install'
-                }
-            }
-        }
-    }
-
-    post {
-        success {
-            echo 'Maven build successful. Add deployment or other steps here.'
-        }
-        failure {
-            echo 'Maven build failed. Take necessary actions here.'
-        }
-    }
-}
+                    
