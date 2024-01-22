@@ -1,0 +1,36 @@
+pipeline {
+    agent any
+
+    environment {
+        MAVEN_HOME = tool 'Maven' // Make sure 'Maven' is configured in Jenkins
+        JAVA_HOME = tool 'JDK' // Make sure 'JDK' is configured in Jenkins
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // Checkout the source code from your GitHub repository
+                checkout scm
+            }
+        }
+
+        stage('Build') {
+            steps {
+                // Set up the Maven environment
+                withMaven(maven: MAVEN_HOME, jdk: JAVA_HOME) {
+                    // Run Maven build
+                    sh 'mvn clean install'
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Maven build successful. Add deployment or other steps here.'
+        }
+        failure {
+            echo 'Maven build failed. Take necessary actions here.'
+        }
+    }
+}
